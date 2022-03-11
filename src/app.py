@@ -30,8 +30,48 @@ def handle_hello():
 
     # this is how you can use the Family datastructure by calling its methods
     members = jackson_family.get_all_members()
+    last_name = jackson_family.last_name #aqui tengo que hacer un request haciendo un json.get dadada
     response_body = {
-        "hello": "world",
+        "Family Name": last_name,
+        "family": members
+    }
+
+
+    return jsonify(response_body), 200
+
+@app.route('/add', methods=['POST'])
+def handle_add():
+
+    # this is how you can use the Family datastructure by calling its methods
+    members = jackson_family.add_member()
+    response_body = {
+        "Family Name": "world",
+        "family": members
+    }
+
+
+    return jsonify(response_body), 200
+
+@app.route('/update', methods=['POST'])
+def handle_update():
+
+    # this is how you can use the Family datastructure by calling its methods
+    members = jackson_family.get_all_members()
+    response_body = {
+        "Family Name": "world",
+        "family": members
+    }
+
+
+    return jsonify(response_body), 200
+
+@app.route('/delete', methods=['DELETE'])
+def handle_delete():
+
+    # this is how you can use the Family datastructure by calling its methods
+    members = jackson_family.delete_member()
+    response_body = {
+        "Family Name": "World",
         "family": members
     }
 
