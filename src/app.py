@@ -26,7 +26,7 @@ def sitemap():
     return generate_sitemap(app)
 
 @app.route('/members', methods=['GET'])
-def handle_hello():
+def  handle_get_all():
 
     # this is how you can use the Family datastructure by calling its methods
     members = jackson_family.get_all_members()
@@ -35,41 +35,44 @@ def handle_hello():
         "Family Name": last_name,
         "family": members
     }
-
-
     return jsonify(response_body), 200
+
+    #este es para capturar un solo miembro y falta terminar de definir
+
+
+#o tambien:
+@app.route('/members/<int:id>', methods=['GET'])
+def handle_get(id):
+    member = jackson_family.get_member(id)
+    if member != None:
+        return jsonify({'member': member}, 200)
+    return jsonify({'message':'Not found'}, 400)
+    
 # adding a member
 @app.route('/members', methods=['POST'])
 def handle_add():
     data = request.json
     members = jackson_family.add_member(data)
-    return jsonify(response_body), 200
+    return jsonify({'message':'Family member added'}), 200
 
-@app.route('/update', methods=['POST'])
-def handle_update():
+    #deleting a member
+#@app.route('/members/<int:id>', methods=['GET','DELETE'])
+#def handle_delete():
+#    member = jackson_family.delete_member(data)
+#    jackson_family.delete_member(id) 
+#    return jsonify({'message':'Family member removed'}), 200
 
-    # this is how you can use the Family datastructure by calling its methods
-    members = jackson_family.get_all_members()
-    response_body = {
-        "Family Name": "world",
-        "family": members
-    }
+@app.route('/members/<int:id>', methods=[ 'DELETE'])
+def get_or_delete_member(id):
+    member = jackson_family.get_member(id)
 
+    if member == None:
+        return jsonify({ "message": "Member not found" }, 400)
+    
+    jackson_family.delete_member(id)
+    
+    return jsonify({ "done": True })
 
-    return jsonify(response_body), 200
-
-@app.route('/delete', methods=['DELETE'])
-def handle_delete():
-
-    # this is how you can use the Family datastructure by calling its methods
-    members = jackson_family.delete_member()
-    response_body = {
-        "Family Name": "World",
-        "family": members
-    }
-
-
-    return jsonify(response_body), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':

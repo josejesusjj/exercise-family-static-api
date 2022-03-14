@@ -50,20 +50,16 @@ class FamilyStructure:
 
     def delete_member(self, id):
         # fill this method and update the return
-        pass
+        self._members = [member for member in self._members if member["id"] != id]
+
 
     def get_member(self, id):
         # fill this method and update the return
         for member in self._members:
-            #if id == member.get('id'): --ambos sirven aqui--
-            if id == member['id']:
+            if id == member.get('id'): #--ambos sirven aqui--
+            #if id == member['id']:
                 return member
         return None
-
-    def update_member(self, id, member):
-        ## you have to implement this method
-        ## loop the list and replace the member with the given id
-        pass
 
     # this method is done, it returns a list with all the family members
     def get_all_members(self):
