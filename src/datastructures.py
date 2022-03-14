@@ -15,17 +15,21 @@ class FamilyStructure:
         # example list of members
         self._members = [{
     
+     "id": self._generateId(),
     'name': 'John',
+    'last_name' : last_name,
     'Age' : 33,
     'Lucky Numbers' : [7, 13, 22]
 },{
-    
+     "id": self._generateId(),
     'name': 'Jane',
+    'last_name' : last_name,
     'Age' : 35,
     'Lucky Numbers' : [10, 14, 3]
 },{
-    
+     "id": self._generateId(),
     'name': 'Jimmy',
+    'last_name' : last_name,
     'Age' : 5,
     'Lucky Numbers' : [1]
 }]
@@ -55,6 +59,11 @@ class FamilyStructure:
             if id == member['id']:
                 return member
         return None
+
+    def update_member(self, id, member):
+        ## you have to implement this method
+        ## loop the list and replace the member with the given id
+        pass
 
     # this method is done, it returns a list with all the family members
     def get_all_members(self):
