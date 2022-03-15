@@ -35,7 +35,7 @@ class FamilyStructure:
 }]
 
     def __str__(self):
-        return "Objeto familia"
+        return "Object family"
 
 
     # read-only: Use this method to generate random members ID's when adding members into the list
