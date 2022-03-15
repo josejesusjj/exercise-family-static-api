@@ -27,60 +27,43 @@ def sitemap():
 
 @app.route('/members', methods=['GET'])
 def  handle_get_all():
-    members = jackson_family.get_all_members()
-    data = request.json 
     last_name = jackson_family.last_name
-    response_body = members
-    return jsonify(response_body), 200
+    members = jackson_family.get_all_members()  
+    return jsonify(members), 200
 
     #este es para capturar un solo miembro y falta terminar de definir
 
 
 #o tambien:
-@app.route('/members/<int:id>', methods=['GET'])
+@app.route('/member/<int:id>', methods=['GET'])
 def handle_get(id):
     member = jackson_family.get_member(id)
     if member != None:
-        return jsonify({'member': member}, 200, 'Ok')
-    return jsonify({'message':'Not found'}, 404, 'error')
-
-    
-#@app.route('/members', methods=['POST'])
-#def handle_add():
-#    data = request.json
-#    member = jackson_family.get_member(id)
-#    if member == None:
-#        return jsonify({'message':'Family member added'}), 200
-        
-#    else:
-#        return jsonify({'message':'Missing data'}), 400
-#    else: 
-#        return jsonify({ "message": "Member already added" }, 400)  
-
+        return jsonify(member), 200
+    return jsonify({'message':'Not found'}, 404)
     
 # adding a member
-@app.route('/members', methods=['POST'])
+@app.route('/member', methods=['POST'])
 def handle_add():
-    data = request.json
-    members = jackson_family.add_member(data)
-    return jsonify({'message':'Family member added'}), 200
+    member = request.json
+    required = ["name", "age", "lucky_numbers"]
+    for section in required:
+        if section not in required:
+            return jsonify({"message":"ERROR: Mandatory information missing, please check first_name, last_name, age and lucky_numbers"}, 400)   
+    jackson_family.add_member(member)
 
-    #deleting a member
-#@app.route('/members/<int:id>', methods=['GET','DELETE'])
-#def handle_delete():
-#    member = jackson_family.delete_member(data)
-#    jackson_family.delete_member(id) 
-#    return jsonify({'message':'Family member removed'}), 200
+    return jsonify({'message':'Family member added successfully'}, 200)
 
-@app.route('/members/<int:id>', methods=[ 'DELETE'])
+# deleting a member
+@app.route('/member/<int:id>', methods=[ 'DELETE'])
 def get_or_delete_member(id):
     member = jackson_family.get_member(id)
 
     if member == None:
-        return jsonify({ "message": "Member not found" }, 404, 'Error')
+        return jsonify({ "message": "Member not found" }, 404)
     
     jackson_family.delete_member(id)    
-    return jsonify({ "done": True }, 200, 'Ok')
+    return jsonify({ "done": True })
 
 
 # this only runs if `$ python src/app.py` is executed
